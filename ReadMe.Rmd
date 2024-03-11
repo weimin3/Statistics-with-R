@@ -1,0 +1,309 @@
+---
+title: "Statistics and DataAnalysis"
+output: html_document
+date: "2024-03-03"
+---
+# 1 Background
+
+## 1.1 Exploratory Data Analysis
+
+**what is the data analysis workflow?**
+
+Hypothesis to investigate/Phonemena to study --> Design the experiment --> Collect data,do the experiment --> Perform exploratory data analysis(can directly to the last step) --> Propose statistical model --> Fit the model --> Validate the model --> Summarize results,and conclude
+
+**Descriptive statistics**
+
+- number of observations
+
+- number and type of variables
+
+- number of missing values
+
+- (empirical) mean,truncated/trimmed mean,median
+
+- quantiles and quartiles
+
+- variance,standard deviation, and interquartile range(third quartile minus the first quartile)
+
+**Types of data**
+
+- **Nominal** (=,!=): category data, such as **gender**, **colors**, **types of animals**
+
+- **Ordinal**(=,!=,<,>):category data with a natural order or ranking. such as **rankings(1st,2nd,3rd)**, **educational levels(high school,undergraduate,graduate)**, **customer satisfaction levels(poor, fair, good, excellent)**
+
+- **Interval**(=,!=,<,>,-,+): is similar to ordinal data but with the distinction that **the intervals between consecutive values are equal.** such as **temperature measured in Clesius or Fahrenheit,where 0 degrees does not represent the absence of temperature. Be careful! teh datatype of temperature in Kelvin is real!**
+
+- **Ratio**(=,!=,<,>,-,+,\*,/): also known as real data,such as **height,weight,time,age,income**
+
+**Location**
+
+- **Sample mean**: $\bar{x} = \frac{\sum_{i=1}^{n} x_{i}}{n}$
+
+- **Sample median**: is the middle number in a sorted list of numbers, or the mean of the two numbers on the middle
+
+- **Trimmed mean**: e.g. a 5% trimmed mean, the lowest 5% and highest 5% of the data are excluded,compute the mean from the remaining data.
+
+  **Example:**
+
+  50,100,100,250,1000
+
+  - Sample mean = $\frac{50+100+100+250+1000}{5}=300$
+
+  - Sample median = 100
+
+  - 20% Trimmed mean = $\frac{(100+100+250)}{3} = 150$
+
+**Why median/trimmed mean?** 
+
+they are alternative measures of central tendency to the mean(average).
+
+- they are less sensitive to extreme values(outliers)
+
+- For Non-normal data,they are less affected by the shape of the distribution.
+
+- Better reflection of Central tendency.
+
+**Outliers:** In a sample, any of the few *observations* that are *separated so far in*
+*value from the remaining measurements*  that the questions arise *whether they belong to a different population*, or that the *sampling technique is faulty*. The determination that an observation is an outlier may be highly *subjective*, as there is no strict criteria for deciding what is and what is not an outlier.  **Outliers are data points that deviate significantly from the rest of the data in a dataset.**
+
+**Spread** the extent to which the values in a dataset vary or are dispersed from the central tendency.indicating how much the individual observations deviate from the average or typical value. **Narrow distribution:窄钟型分布** and **Broad distribution：宽钟型分布**
+
+- **Quantiles(分位数) and quartiles(四分位数)**： **Quantiles** link observations or values with the position in the ordered data.
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/quantiles.jpg)
+
+- **Sample variance(方差):** $S^{2} = \frac{1}{n-1} \sum_{i=1}^{n}(x_i - \bar{x})^2$
+
+- **Sample standard deviation(标准差):** $S = \sqrt{S^2}$
+
+- **Sample interquartile range(四分位距):** $IQR = 3^{rd} quartile - 1^{st} quartile$
+
+  **Example:**
+
+  50,100,100,250,1000
+
+  - Sample variance S^2= $\frac{(50-300)^2 + (100-300)^2 + (100-300)^2 + (250-300)^2 + (1000-300)^2}{5-1} = 158750$
+
+  - Sample standard deviation S = $\sqrt{s^2}= 398.4$
+
+  - Sample interquartile range IQR = $3^{rd} quartile - 1^{st} quartile = 250 - 100 = 150$
+
+
+**plot**
+
+- **Boxplot**
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/boxplot.jpg)
+
+- **Q-Q(quantile-quantile) plot** 分位比较图：Quantiles 0.1,0.2,...,0.9 quantiles split the area under the density curve into ten equal areas.
+
+Goal of the Q-Q plot:
+
+  - Compare **empirical data quantiles** with the quantiles of a **theoretical distribution**
+  
+  - The ordered values are compared with the i/(n+1)-quantiles
+  
+  - used to check which of two distributions describes the data better.
+  
+**Multivariate data**  
+
+
+
+## 1.2 Random Variables
+
+### 1.2.1 Basics of probability theory
+
+**Random variable** 
+ - Random variable X is a **function** from the **sample space** to R and represents a possible numerical outcome of an experiment.
+ - The distribution function(**cumulative distribution function,cdf**) of a random variable X is F(x) = Fx(x) = p(X<= x), for all x
+ 
+ ![](/Users/shangyu/Documents/GitHub/Statistics with R/images/cdf.jpg)
+
+**Properties of cdf**
+
+- Monotonically increasing: for x < y, Fx(x) <= Fx(y)
+
+- Normalized: $\lim_{x \to -\infty} F_x(x)= 0$, $\lim_{x\to \infty} F_x(x) = 1$
+
+- Right-continuous:$lim_{\in \to 0^+} F_x(x+ \in)= F_x(x)$ for all x $\in$ R
+
+
+**Discrete distributions: Bernoulli distribution**
+
+A random experiment with exactly two possible outcomes(for example:heads/tails) is called a **Bernoulli trial** or **Bernoulli random variable** 
+
+- P(X = 1) = p
+
+- P(X = 0) = 1-p
+
+- 0 < p < 1
+
+- Bernoulli experiment is repeated n times, only the total number of success is important.X ~ Bin(n,p)
+$$
+P(X = k) = \left(\substack{n\\k}\right)p^k(1-p)^{(n-k)},       0<p<1, k = 0,1,...,n.
+$$
+
+  **Example**
+  
+  Probability of getting 2 tails and 2 heads, when throwing 4 times a fair coin
+  
+  P(X = 2) = $\left(\substack{4\\2}\right) 0.5^2(1-0.5)^{2} = \frac{4!}{2!(4-2)!} 0.5^4 = \frac{3}{8}$
+  
+
+**Probability mass function(pmf)** of a **discrete random variable X** is defined by $f_X(x) = P(X = x)$
+
+The pmf gives probabilities that the **random variables** takes a **precise single value**
+
+**Properties of probability mass function(pmf)**
+
+Let X be a discrete random variable with probability mass function $f_X(x)$ and cumulative distribution function $F_X(x)$. Then:
+
+- 1. The probability mass function satisfies $f_X(x) >= 0$ for all $x \in R$
+
+- 2. $\sum_{i} f_X(x_i) = 1$
+
+- 3. $F_X(x) = \sum_{i:x_i<=x} f_X(x_i)$
+
+- 4. The values $f_X(x_i) > 0$ are the "jumps" in $x_i$ of $F_X(x)$
+
+- 5. The culmulative distribution function is a right-continuous step function
+
+**Poisson distribution**： a random variable X, whose probability function is given by $P(X= k) = \frac{\lambda^k}{k!} exp(-\lambda)$, 0<$\lambda$, k = 0,1,... is said to follow a Poisson distribution with parameter $\lambda$, denoted by X ~ Pois($\lambda$) **在固定时间或空间内，某个事件发生的次数的离散概率分布**
+
+**Discrete vs. Continuous distributions**
+
+- A random variable is called **discrete** when it can assume only a **finite** or **countably infinite** number of values.
+
+- A random variable is called **continuous** if it can assume any value from one or several intervals.
+
+
+**Probability density function(pdf)$f_X(x)$** is defined by $P(a<X<=b) = \int_{a}^{b} f_X(x)dx, a<b$
+
+
+**Properies of density function**
+
+let X be a continuous random variable with density function $f_X(x)$ and distribution function $F_X(x)$,then:
+
+- The density function satisfies $f_X(x) >= 0$ for all $x \in R$ and $f_X(x)$ is continous almost everywhere.
+
+- $\int_{-\infty}^{\infty}f_X(x)dx = 1$
+
+- $F_X(x) = \int_{-\infty}^{x}f_X(y)dy$
+
+- $f_X(x) = F^{'}_X(x) = \frac{d}{dx} F_X(x)$
+
+- The cumulative distribution function $F_X(x)$ is continous everywhere
+
+- P(X = x) = 0
+
+**Two conditions to check if a function is a pdf**
+
+- $f_X(x) >= 0$
+
+- $\int_{-\infty}^{\infty}f_X(x) = 1$
+
+**Example**
+
+Is $f_X(x) = \begin{cases}\frac{1}{2}x & \text{for 0<= x <= 2} \\0 &\text{otherwise}\end{cases}$ a pdf?
+
+1. $f_X(x) >= 0$ for any x
+
+2. $\int_{0}^{2}\frac{1}{2}xdx = 1 $
+
+Yes!
+
+**Uniform distribution**
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/Uniform distribution.jpg)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/pdf&cdf.png)
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/Normal distribution.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/ND.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/properties of ND.png)
+**Example**
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/example_nd.png)
+**Quantile function**
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/QF.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/QF1.png)
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/QF2.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/QF4.png)
+
+**Expectation**
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/ex1.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/EX2.png)
+
+**Variance**
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/variance1.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/variance2.png)
+**Properties of expectation and variance**
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/Properties of EandV.png)
+
+**Example**
+
+- 1. You work 5 months in a company with an expected monthly salary $E(X) = 10k$. What would be an expected salary after 4 months of work and 5k bonus?
+
+$E(X_{total})= 4 * E(X) + 5 = 45k$
+
+- 2. You work 3 months in a company with an expected monthly salary $E(X) = 15k$, and 4 months in a company with an expected monthly salary $𝐸(X)=12.5𝑘$ What is your expected total salary from these 2 contracts?
+
+contract 1: $E(X_{total}) = 3*E(X) = 45k$
+
+contract 2: $E(X_{total}) = 4 * E(X) = 50k$
+
+- 3. Compute expected value and variance for a die roll.
+
+$P(X = i) = \frac{1}{6} $ for  i $\in$ {1,2,3,4,5,6}
+
+$E(X) = \sum_{i= 6} ^{6} i * \frac{1}{6} = 3.5$
+
+$Var(X) = E(X^2) - (E(X))^2 = \sum_{i=1}^{6} i^2 * \frac{1}{6} - 3.5^2 = 2\frac{11}{12}$
+
+
+
+## 1.3 Functions of Random Variables
+
+### 1.3.1 Independent random variables
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/irv.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/irv2.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/inde_no.png)
+No,单独Y=0的概率和单独X=5的概率相乘 跟同时Y=0 X=5的概率不一样
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/ind_y.png)
+Yes
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/iid.png)
+**Simplicity: When dealing with i.i.d. random variables, many statistical calculations become simpler because the assumption of independence and identical distribution allows us to treat each random variable as essentially the same.**
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/properties of irv.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/property of irv2.png)
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/Iid_bio.png)
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/chi_square.png)
+
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/F-distribution.png)
+**Central limit theorem**：If you have a distribution with mean 𝜇 and standard 
+deviation 𝜎 and take sufficiently large random samples the sample means will be approximately 
+normally distributed
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/clt.png)
+**Continuity correction**
+![](/Users/shangyu/Documents/GitHub/Statistics with R/images/cc.png)
+
+
+
+## 1.4 Multivariate Normal Distribution
+
+
+# 2. Statistical Foundations
+## 2.1 Estimation of Parameters
+## 2.2 Statistical Testing
+## 2.3 Proportions
+## 2.4 Rank-Based Methods
+## 2.5 Bayesian Approach
+## 2.6 Monte Cario Methods
+
+# 3. Linear Modeling
+## 3.1 Correlation and Simple Regression
+## 3.2 Multiple Regression
+## 3.3 Analysis of Variance
+## 3.4 Design of Experiments
