@@ -1,0 +1,124 @@
+---
+title: "R STA120"
+author: "Zofia Baranczuk"
+date: "March 13, 2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Data loading:
+Load from https://user.math.uzh.ch/furrer/download/sta121/ the following data sets:
+
+elephant.csv
+
+Meatprice.txt
+
+Penguins.RData 
+
+
+```{r elephant}
+elephant <- 
+View(elephant)
+```
+
+```{r meatprice}
+meatprice <- 
+View(meatprice)
+
+```
+
+
+
+```{r Penguins}
+
+View(??)
+```
+
+
+# 2. Working with data frames
+
+Dataset Seatbelts is available in R from the package datasets. 
+You should have access to this data set without loading.
+Use ?Seatbelts to read about the dataset. 
+First we will change the data set to be a data frame (not a Time series), see the code. 
+```{r}
+library(datasets)
+Seatbelts_df <- data.frame(as.matrix(Seatbelts), date=time(Seatbelts)) 
+View(Seatbelts_df)
+# convert Time Series to data frame so that we can work with that. This step is not relevent for us at the moment, we just want to have a data frame to work with
+
+```
+1. Add a column representing the ratio of rear passengers killed to front passengers killed
+```{r}
+
+```
+
+2. In which month there was the lowest number of killed drivers? What was this number?
+```{r}
+
+```
+
+
+3. In which months there were less than 5 van drivers killed? In how many months was that the case?
+```{r}
+
+```
+
+4. How many drivers were killed on average in one month in 1971?
+```{r}
+
+```
+5. (*) In which year the number of killed drivers was the highest?
+
+```{r}
+
+```
+The highest number of deaths was in 1973, 23850 drivers died.  
+
+6. Create a scatter plot Drivers killed against time.
+Use different colors for the data points representing obligatory seat belts and non obligatory.
+```{r}
+
+```
+
+
+7. Choose the rows in which seat belts were obligatory.
+Create a data frame which contains only the rows in which the seat belts where obligatory. 
+Create another data frame, which contains only the rows in which the seat belts where not obligatory.
+```{r}
+
+
+```
+
+
+# 3. Loops
+
+1. a) Plot a density of a standard normal random variable. Superimpose the density of a t-distribution with one
+degree of freedom in blue color.
+b) How large do you have to choose the degrees of freedom of a t-distribution such that the difference between
+its density and the one of a standard normal distribution is smaller than 0.001 in every location? Hint: Use
+a loop and check the difference between the densities for different degrees of freedom.
+
+```{r}
+
+
+
+```
+For i = 136 or more, the maximal difference between the density of the standard normal distribution and the density of the t-distribution with i degrees of freedom, is smaller than 0.001 in every location.
+
+
+###########
+Compute the probability that when tossing a fair coin 20 times, we will have even number of heads. 
+```{r}
+
+
+
+```
+#######################
+Let X~Poisson(2). Compute P(X in {6,7,8,9,10,11,12,13}) 
+```{r}
+
+```
